@@ -2,6 +2,7 @@ import unittest
 import ast
 import inspect
 
+# src: https://stackoverflow.com/a/31197273
 def get_decorators(cls):
     target = cls
     decorators = {}
@@ -22,7 +23,10 @@ def get_decorators(cls):
     node_iter.visit(ast.parse(inspect.getsource(target)))
     return decorators
 
+# The rest of the code below was created by ChatGPT.
+
 def focus(test_func):
+    """Decorator to be used to select tests that need to be run."""
     def wrapper(*args, **kwargs):
         # Set a flag indicating the focused test
         test_func.__unittest_focus__ = True
@@ -31,6 +35,7 @@ def focus(test_func):
 
 # Extend the unittest.TestCase to skip non-focused tests
 class FocusedTestCase(unittest.TestCase):
+    """Same as unittest.TestCase but adds support for the @focus decorator that selects tests that need to be run."""
     def setUp(self):
         # Get decorators for the current class
         decorators = get_decorators(type(self))
